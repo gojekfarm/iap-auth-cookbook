@@ -33,6 +33,14 @@ file "#{node['iap-auth']['iap_auth_dir']}/iap_auth" do
   group 'root'
 end
 
+bash 'base64_decode_gcloud_credentials' do
+  cwd ::File.dirname("#{node['iap-auth']['iap_auth_dir']}")
+  code <<-EOH
+    base64 --decode #{['iap-auth']['service_account_credentials']} > #{node['iap-auth']['service_account_path'])}
+  EOH
+  not_if { ::File.exist?(node['iap-auth']['service_account_path']) }
+end
+
 file "#{node['iap-auth']['service_account_path']}" do
   content "#{node['iap-auth']['service_account_credentials']}"
   owner 'root'
