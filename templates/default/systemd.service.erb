@@ -1,0 +1,12 @@
+[Unit]
+Description=IAP auth service
+Documentation=https://github.com/gojekfarm/iap_auth
+ConditionPathExists="<%= @iap_auth_dir %>/iap_auth"
+After=network.target
+
+[Service]
+ExecStart="<%= @iap_auth_dir %>/iap_auth server"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -57,22 +57,25 @@ template "#{node['iap-auth']['iap_auth_dir']}/iap.conf" do
   )
 end
 
-systemd_unit 'iap-auth.service' do
-  content <<-EOU.gsub(/^\s+/, '')
-  [Unit]
-  Description=IAP auth service
-  Documentation=https://github.com/gojekfarm/iap_auth
-  ConditionPathExists="<%=node['iap-auth']['iap_auth_dir']/iap_auth%>"
-  After=network.target
+template '/etc/systemd/system/iap-auth.service' do
+    source            'systemd.service.erb'
+    owner             'root'
+    group             'root'
+    mode              '0644'
+    variables(iap_auth_dir: node['iap-auth']['iap_auth_dir'])
 
-  [Service]
-  ExecStart="<%=node['iap-auth']['iap_auth_dir']/iap_auth%> server"
-  Restart=always
+    # reload daemon immediately
+    notifies :run, 'execute[systemctl-daemon-reload]', :immediately
+    notifies :restart, "service[iap-auth]", :delayed
+end
 
-  [Install]
-  WantedBy=multi-user.target
+execute 'systemctl-daemon-reload' do
+    command '/bin/systemctl --system daemon-reload'
+    action :nothing
+end
 
-  EOU
-
-  action [:create, :enable, :start]
+service 'iap-auth' do
+    action :enable
+    supports :status => true, :start => true, :restart => true, :stop => true
+    provider Chef::Provider::Service::Systemd
 end
