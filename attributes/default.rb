@@ -16,4 +16,4 @@ default['iap-auth']['iap_host'] = ENV['IAP_HOST']
 default['iap-auth']['service_account_credentials'] = ENV['SERVICE_ACCOUNT_CREDENTIALS']
 default['iap-auth']['client_id'] = ENV['CLIENT_ID']
 default['iap-auth']['port'] = ENV['PORT'] || '8080'
-default['iap-auth']['refresh_time_seconds'] = ENV['REFRESH_TIME_SECONDS'] || '3600'
+default['iap-auth']['refresh_time_seconds'] = ENV['REFRESH_TIME_SECONDS'] || '3600s'
