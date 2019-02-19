@@ -50,7 +50,7 @@ template "#{node['iap-auth']['iap_auth_dir']}/iap.conf.toml" do
   mode '0666'
   variables(
     iap_host: node['iap-auth']['iap_host'],
-    service_account_credentials: node['iap-auth']['service_account_path'],
+    service_account_path: node['iap-auth']['service_account_path'],
     client_id: node['iap-auth']['client_id'],
     port: node['iap-auth']['port'],
     refresh_time_seconds: node['iap-auth']['refresh_time_seconds']
