@@ -43,14 +43,14 @@ ruby_block 'base64_decode_gcloud_credentials' do
   end
 end
 
-template "#{node['iap-auth']['iap_auth_dir']}/iap.conf" do
+template "#{node['iap-auth']['iap_auth_dir']}/iap.conf.toml" do
   source 'iap.conf.toml.erb'
   owner 'root'
   group 'root'
   mode '0666'
   variables(
     iap_host: node['iap-auth']['iap_host'],
-    service_account_credentials: node['iap-auth']['service_account_credentials'],
+    service_account_credentials: node['iap-auth']['service_account_path'],
     client_id: node['iap-auth']['client_id'],
     port: node['iap-auth']['port'],
     refresh_time_seconds: node['iap-auth']['refresh_time_seconds']
